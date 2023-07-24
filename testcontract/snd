@@ -1,0 +1,1 @@
+cleos set contract testcontract . -p testcontract --use-old-send-rpc -t false

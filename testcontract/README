@@ -1,0 +1,12 @@
+All interactions assume 127.0.0.1:8888 for sending transactions, which is the default.
+
+create.sh : create testcontract account
+
+doc : compile contract
+
+snd : deploy contract
+
+freeze.sh : freeze account (set immutable)
+
+
+

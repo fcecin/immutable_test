@@ -1,0 +1,45 @@
+Put under leap/ here the build that is ux4.0.4 BUT without the immutability checks (have to comment these out).
+
+This will run the 21 producers WITHOUT immutability, as if a total collusion had happened.
+
+This has the uxnode running the actual ux4.0.4 build as a peer node.
+
+Also, your cleos wallet at the default location it is expected to be in (something like ~/eosio.wallet/default.wallet), should be unlocked, and it should contain the "EOSIO Development Key" in it:
+
+Private key: 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+Public key:  EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+
+We are running the cleos executable that is inside the custom leap build that's under this directory, but it still looks for your cleos wallet at that default location unless we were to tell it to look for a wallet elsewhere.
+
+
+-----
+
+How to generate the leap/ directory:
+
+git clone --recursive https://github.com/cryptomechanics/ux-leap-bls    (OR any other source of UX Leap sourcecode)
+mv ux-leap-bls leap
+cd leap
+git checkout ux4.0.4    (or ux4.0.4-bls if you want to include code that won't trigger)
+git submodule update --init --recursive
+** disable immutability in the code (see below) **
+(cmake, make, etc. to generate it under leap/build/...)
+
+-----
+
+How to disable immutability:
+
+Edit libraries/chain/eosio_contract.cpp and comment out this entire function's body:
+
+// UX Network
+void check_account_mutable(apply_context& context, const name& owner) {
+
+   // Malicious node: all immutability checks disabled
+   
+   //auto& db = context.db;
+   //auto freeze_account = db.find<account_object, by_name>(name("eosio.freeze"));
+   //if(freeze_account != nullptr) {
+   //   int iterator = context.db_find_i64(name("eosio.freeze"), name("eosio.freeze"), name("frozenaccs"), owner.to_uint64_t());
+   //   // check for an invalid iterator, i.e., not in table
+   //   EOS_ASSERT( iterator < 0, action_validate_exception, "account is immutable" );
+   //}
+}

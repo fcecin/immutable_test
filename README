@@ -1,0 +1,28 @@
+eosio1.8.3: binaries and ABIs for eosio 1.8.3 contracts
+
+uxcontracts: binaries and ABIs for UX Network contracts
+
+fakeuxprods: producing node with 21 producers + eosio that should contain a UX 4.0.4 leap build under fakeuxprods/leap/... that has immutability commented out (i.e. a malicious node)
+
+uxnode: non-producing, honest UX node that will connect to fakeuxprods. should have a honest, regular ux4.0.4 build under uxnode/leap/... 
+
+---
+
+test order:
+
+-start fakeuxprods
+-boot fakeuxprods
+-elect bps for fakeuxprods
+-start uxnode
+-for every immutability feature, test it
+
+example immutability feature test (set contract (set code + set abi)):
+-compile a testcontract
+-set contract testcontract (these operations should be done through the fakeuxprods HTTP/transaction port, which should be 127.0.0.1:8888 if it wasn't changed)
+-change testcontract source (any change)
+-recompile testcontract
+-set testcontract account immutable
+-set contract testcontract (producers node "fakeuxprods" accepts it, observer "uxnode" obviously malfunctions at the block height where the illegal transaction is rolled into a produced block)
+
+
+

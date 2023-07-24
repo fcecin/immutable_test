@@ -1,0 +1,43 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.2",
+    "types": [],
+    "structs": [
+        {
+            "name": "testname1",
+            "base": "",
+            "fields": [
+                {
+                    "name": "n",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "testsym1",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "symbol"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "testname1",
+            "type": "testname1",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "testsym1",
+            "type": "testsym1",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [],
+    "ricardian_clauses": [],
+    "variants": [],
+    "action_results": []
+}

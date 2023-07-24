@@ -1,0 +1,241 @@
+TEST NOTES:
+
+- did not test deleteauth or unlinkauth (the expected result is the exact same; there is absolutely no way one of the functions blows up and the others don't. They are exact clones of each other).
+
+- the BP election is not working for some reason (the scripts are an attempt at getting the UX elections to work; may get it to work if can figure out what the bug is) but it doesn't matter, since the test doesn't care whether the BP is eosio only or if it's 21 elected producer identities on the exact same node
+
+
+RESULTS:
+
+1. the producer node, which is dishonest, keeps chugging along. it gets a constant flood of connection/go-away messages from the honest nodes that the dishonest producers have destroyed, so they are also reminded that they have fucked up the entire network (no excuse that they can't see they broke the network)
+
+2. log samples at the honest node (completely broken/dead):
+
+---------------------------
+Linkauth test:
+---------------------------
+
+info  2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.315 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #179 e0ed6d3177d92e32...: Unlinkable block (3030001)
+unlinkable block 000000b3e0ed6d3177d92e3265258636a0673dd2220752e952aa18e7492edd45
+
+info  2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:32:08.315 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 180: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607
+    {"id":"000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607","previous":"000000b3e0ed6d3177d92e3265258636a0673dd2220752e952aa18e7492edd45"}
+    chain-0  controller.cpp:2214 operator()
+
+info  2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.315 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #180 ffb7ba4f439b2391...: Unlinkable block (3030001)
+unlinkable block 000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607
+
+info  2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:32:08.315 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 181: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b56dc36f7e94c481cb2a1534f90a164c05c6b02ec3678dc2c60b6c9af9
+    {"id":"000000b56dc36f7e94c481cb2a1534f90a164c05c6b02ec3678dc2c60b6c9af9","previous":"000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607"}
+    chain-1  controller.cpp:2214 operator()
+
+info  2023-07-24T21:32:08.315 net-0     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.316 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #181 6dc36f7e94c481cb...: Unlinkable block (3030001)
+unlinkable block 000000b56dc36f7e94c481cb2a1534f90a164c05c6b02ec3678dc2c60b6c9af9
+
+info  2023-07-24T21:32:08.316 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.316 net-0     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:32:08.316 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 178: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b2141f040b3a04f8069f2b7f5515abe82a2d3d6cd704a31d7657cbfa01
+    {"id":"000000b2141f040b3a04f8069f2b7f5515abe82a2d3d6cd704a31d7657cbfa01","previous":"000000b11b0aad5f83c2713108b48f51218796201271655e2aab4f29b88651a4"}
+    chain-0  controller.cpp:2214 operator()
+
+info  2023-07-24T21:32:08.316 net-0     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.316 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #178 141f040b3a04f806...: Unlinkable block (3030001)
+unlinkable block 000000b2141f040b3a04f8069f2b7f5515abe82a2d3d6cd704a31d7657cbfa01
+
+info  2023-07-24T21:32:08.316 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.316 net-0     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:32:08.316 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 179: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b3e0ed6d3177d92e3265258636a0673dd2220752e952aa18e7492edd45
+    {"id":"000000b3e0ed6d3177d92e3265258636a0673dd2220752e952aa18e7492edd45","previous":"000000b2141f040b3a04f8069f2b7f5515abe82a2d3d6cd704a31d7657cbfa01"}
+    chain-1  controller.cpp:2214 operator()
+
+info  2023-07-24T21:32:08.316 net-0     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.316 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #179 e0ed6d3177d92e32...: Unlinkable block (3030001)
+unlinkable block 000000b3e0ed6d3177d92e3265258636a0673dd2220752e952aa18e7492edd45
+
+info  2023-07-24T21:32:08.316 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:32:08.317 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 180: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607
+    {"id":"000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607","previous":"000000b3e0ed6d3177d92e3265258636a0673dd2220752e952aa18e7492edd45"}
+    chain-0  controller.cpp:2214 operator()
+
+info  2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.317 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #180 ffb7ba4f439b2391...: Unlinkable block (3030001)
+unlinkable block 000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607
+
+info  2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:32:08.317 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 181: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b56dc36f7e94c481cb2a1534f90a164c05c6b02ec3678dc2c60b6c9af9
+    {"id":"000000b56dc36f7e94c481cb2a1534f90a164c05c6b02ec3678dc2c60b6c9af9","previous":"000000b4ffb7ba4f439b2391fa6755c605b8b1948bdd7153d39fe22b5fe53607"}
+    chain-1  controller.cpp:2214 operator()
+
+info  2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.317 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 15: #181 6dc36f7e94c481cb...: Unlinkable block (3030001)
+unlinkable block 000000b56dc36f7e94c481cb2a1534f90a164c05c6b02ec3678dc2c60b6c9af9
+
+info  2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Sending handshake generation 1, lib 175, head 176, id eddf384ff3275bc1
+error 2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] Error sending to peer: Bad file descriptor
+info  2023-07-24T21:32:08.317 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 2710b76" - 15 127.0.0.1:58440] closing
+error 2023-07-24T21:32:08.317 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 178: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000000b2141f040b3a04f8069f2b7f5515abe82a2d3d6cd704a31d7657cbfa01
+    {"id":"000000b2141f040b3a04f8069f2b7f5515abe82a2d3d6cd704a31d7657cbfa01","previous":"000000b11b0aad5f83c2713108b48f51218796201271655e2aab4f29b88651a4"}
+    chain-0  controller.cpp:2214 operator()
+
+
+
+
+Updateauth test:
+
+cleos set account permission testcontract active EOS5zG7PsdtzQ9achTdRtXwHieL7yyigBFiJDRAQonqBsfKyL3XhC -p testcontract@owner
+
+info  2023-07-24T21:23:49.150 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] closing
+info  2023-07-24T21:23:49.150 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Sending handshake generation 1, lib 450, head 451, id 58cf303cbb9562fb
+error 2023-07-24T21:23:49.150 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 466: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000001d2b7353ca79db10152413192b71029f182e02f07eef7e143eef1c6e485
+    {"id":"000001d2b7353ca79db10152413192b71029f182e02f07eef7e143eef1c6e485","previous":"000001d199343d3c9565136c6fd0cadf6f60b26fdadf0b055dda577372de748a"}
+    chain-0  controller.cpp:2214 operator()
+
+error 2023-07-24T21:23:49.151 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:23:49.151 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 111: #466 b7353ca79db10152...: Unlinkable block (3030001)
+unlinkable block 000001d2b7353ca79db10152413192b71029f182e02f07eef7e143eef1c6e485
+
+info  2023-07-24T21:23:49.151 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] closing
+info  2023-07-24T21:23:49.151 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Sending handshake generation 1, lib 450, head 451, id 58cf303cbb9562fb
+error 2023-07-24T21:23:49.151 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 467: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000001d3a04887186b2db7416f59be17f3c15081cea7dfc7cd5897231dce44ef
+    {"id":"000001d3a04887186b2db7416f59be17f3c15081cea7dfc7cd5897231dce44ef","previous":"000001d2b7353ca79db10152413192b71029f182e02f07eef7e143eef1c6e485"}
+    chain-1  controller.cpp:2214 operator()
+
+error 2023-07-24T21:23:49.151 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:23:49.151 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 111: #467 a04887186b2db741...: Unlinkable block (3030001)
+unlinkable block 000001d3a04887186b2db7416f59be17f3c15081cea7dfc7cd5897231dce44ef
+
+info  2023-07-24T21:23:49.151 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] closing
+info  2023-07-24T21:23:49.151 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Sending handshake generation 1, lib 450, head 451, id 58cf303cbb9562fb
+error 2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Error sending to peer: Bad file descriptor
+error 2023-07-24T21:23:49.152 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 468: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000001d4f6a9ed904ce0fec8cf5e0cf4b016936b0d436b427838e6cb4ab82016
+    {"id":"000001d4f6a9ed904ce0fec8cf5e0cf4b016936b0d436b427838e6cb4ab82016","previous":"000001d3a04887186b2db7416f59be17f3c15081cea7dfc7cd5897231dce44ef"}
+    chain-0  controller.cpp:2214 operator()
+
+info  2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] closing
+error 2023-07-24T21:23:49.152 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 111: #468 f6a9ed904ce0fec8...: Unlinkable block (3030001)
+unlinkable block 000001d4f6a9ed904ce0fec8cf5e0cf4b016936b0d436b427838e6cb4ab82016
+
+info  2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Sending handshake generation 1, lib 450, head 451, id 58cf303cbb9562fb
+error 2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Error sending to peer: Bad file descriptor
+info  2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] closing
+error 2023-07-24T21:23:49.152 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 469: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 000001d59b348ca27a4bd2fa2dd41dea37add05bec60c63b8da70abe9fb868a5
+    {"id":"000001d59b348ca27a4bd2fa2dd41dea37add05bec60c63b8da70abe9fb868a5","previous":"000001d4f6a9ed904ce0fec8cf5e0cf4b016936b0d436b427838e6cb4ab82016"}
+    chain-1  controller.cpp:2214 operator()
+
+error 2023-07-24T21:23:49.152 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 111: #469 9b348ca27a4bd2fa...: Unlinkable block (3030001)
+unlinkable block 000001d59b348ca27a4bd2fa2dd41dea37add05bec60c63b8da70abe9fb868a5
+
+info  2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Sending handshake generation 1, lib 450, head 451, id 58cf303cbb9562fb
+error 2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1285           operator()           ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] Error sending to peer: Bad file descriptor
+info  2023-07-24T21:23:49.152 net-2     net_plugin.cpp:1074           _close               ] ["127.0.0.1:9876 - 1c8bb14" - 111 127.0.0.1:38574] closing
+
+
+
+
+When trying the setcontract (setcode and setabi):
+
+
+info  2023-07-24T21:12:43.772 net-0     net_plugin.cpp:1788           start_sync           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Catching up with chain, our last req is 0, theirs is 7562, next expected 7515
+info  2023-07-24T21:12:43.772 net-0     net_plugin.cpp:1737           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] requesting range 7515 to 7562
+error 2023-07-24T21:12:43.772 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7542: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d7650c95060498837d92314465790b3d14f680bd0aca09039d289040392
+    {"id":"00001d7650c95060498837d92314465790b3d14f680bd0aca09039d289040392","previous":"00001d750a7751176340a14b5988dacfde3dc3e25fdbeed20290db3e3f8a2249"}
+    chain-1  controller.cpp:2214 operator()
+
+info  2023-07-24T21:12:43.772 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 28, lib 7512, head 7513, id acb03ea6083bef4e
+info  2023-07-24T21:12:43.772 net-0     net_plugin.cpp:1788           start_sync           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Catching up with chain, our last req is 0, theirs is 7562, next expected 7515
+error 2023-07-24T21:12:43.772 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7542 50c95060498837d9...: Unlinkable block (3030001)
+unlinkable block 00001d7650c95060498837d92314465790b3d14f680bd0aca09039d289040392
+
+info  2023-07-24T21:12:43.772 net-0     net_plugin.cpp:1737           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] requesting range 7515 to 7562
+error 2023-07-24T21:12:43.772 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7543: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d779eb0fe4fa9b1068a816751abf4dafbd7322e6b805eaee59026832e36
+    {"id":"00001d779eb0fe4fa9b1068a816751abf4dafbd7322e6b805eaee59026832e36","previous":"00001d7650c95060498837d92314465790b3d14f680bd0aca09039d289040392"}
+    chain-0  controller.cpp:2214 operator()
+
+info  2023-07-24T21:12:43.773 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 29, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.773 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7543 9eb0fe4fa9b1068a...: Unlinkable block (3030001)
+unlinkable block 00001d779eb0fe4fa9b1068a816751abf4dafbd7322e6b805eaee59026832e36
+
+info  2023-07-24T21:12:43.773 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 30, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.773 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7544: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d784c1a862e2f4c14bfffc17d1fc692390a0e1395096f28ec5f7d4e97cf
+    {"id":"00001d784c1a862e2f4c14bfffc17d1fc692390a0e1395096f28ec5f7d4e97cf","previous":"00001d779eb0fe4fa9b1068a816751abf4dafbd7322e6b805eaee59026832e36"}
+    chain-1  controller.cpp:2214 operator()
+
+error 2023-07-24T21:12:43.773 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7544 4c1a862e2f4c14bf...: Unlinkable block (3030001)
+unlinkable block 00001d784c1a862e2f4c14bfffc17d1fc692390a0e1395096f28ec5f7d4e97cf
+
+info  2023-07-24T21:12:43.773 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 31, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.773 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7545: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d798807e9ad37d10528d1984e732892d2f46b77ed75d77938f109d78019
+    {"id":"00001d798807e9ad37d10528d1984e732892d2f46b77ed75d77938f109d78019","previous":"00001d784c1a862e2f4c14bfffc17d1fc692390a0e1395096f28ec5f7d4e97cf"}
+    chain-0  controller.cpp:2214 operator()
+
+error 2023-07-24T21:12:43.773 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7545 8807e9ad37d10528...: Unlinkable block (3030001)
+unlinkable block 00001d798807e9ad37d10528d1984e732892d2f46b77ed75d77938f109d78019
+
+info  2023-07-24T21:12:43.773 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 32, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.774 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7546: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d7abf14b6a3b4fe8c96ad85d17456a734cf5b21b43bd60c12a62a129bba
+    {"id":"00001d7abf14b6a3b4fe8c96ad85d17456a734cf5b21b43bd60c12a62a129bba","previous":"00001d798807e9ad37d10528d1984e732892d2f46b77ed75d77938f109d78019"}
+    chain-1  controller.cpp:2214 operator()
+
+error 2023-07-24T21:12:43.774 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7546 bf14b6a3b4fe8c96...: Unlinkable block (3030001)
+unlinkable block 00001d7abf14b6a3b4fe8c96ad85d17456a734cf5b21b43bd60c12a62a129bba
+
+info  2023-07-24T21:12:43.774 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 33, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.774 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7547: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d7b0d955244f9eac23dac31ffd82a6c7b3376f54b7e35d30ecfef9dcb40
+    {"id":"00001d7b0d955244f9eac23dac31ffd82a6c7b3376f54b7e35d30ecfef9dcb40","previous":"00001d7abf14b6a3b4fe8c96ad85d17456a734cf5b21b43bd60c12a62a129bba"}
+    chain-0  controller.cpp:2214 operator()
+
+error 2023-07-24T21:12:43.774 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7547 0d955244f9eac23d...: Unlinkable block (3030001)
+unlinkable block 00001d7b0d955244f9eac23dac31ffd82a6c7b3376f54b7e35d30ecfef9dcb40
+
+info  2023-07-24T21:12:43.774 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 34, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.774 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7548: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d7c86271c848c6e47b5c1e80183da639a22b2bbd5b263f05a8fa660672e
+    {"id":"00001d7c86271c848c6e47b5c1e80183da639a22b2bbd5b263f05a8fa660672e","previous":"00001d7b0d955244f9eac23dac31ffd82a6c7b3376f54b7e35d30ecfef9dcb40"}
+    chain-1  controller.cpp:2214 operator()
+
+error 2023-07-24T21:12:43.774 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7548 86271c848c6e47b5...: Unlinkable block (3030001)
+unlinkable block 00001d7c86271c848c6e47b5c1e80183da639a22b2bbd5b263f05a8fa660672e
+
+info  2023-07-24T21:12:43.775 net-0     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 35, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.775 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7549: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d7d699bac8d39ec2dc7c4f2e9f40266bd093d90bc47ee42dfade12f2bac
+    {"id":"00001d7d699bac8d39ec2dc7c4f2e9f40266bd093d90bc47ee42dfade12f2bac","previous":"00001d7c86271c848c6e47b5c1e80183da639a22b2bbd5b263f05a8fa660672e"}
+    chain-0  controller.cpp:2214 operator()
+
+error 2023-07-24T21:12:43.775 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7549 699bac8d39ec2dc7...: Unlinkable block (3030001)
+unlinkable block 00001d7d699bac8d39ec2dc7c4f2e9f40266bd093d90bc47ee42dfade12f2bac
+
+info  2023-07-24T21:12:43.775 net-2     net_plugin.cpp:1183           operator()           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Sending handshake generation 36, lib 7512, head 7513, id acb03ea6083bef4e
+error 2023-07-24T21:12:43.775 nodeos    producer_plugin.cpp:608       operator()           ] Exception on block 7550: 3030001 unlinkable_block_exception: Unlinkable block
+unlinkable block 00001d7e9c1357eb549907b7a1d85c38ad9b1f5c64df10071118e15d1b40862a
+    {"id":"00001d7e9c1357eb549907b7a1d85c38ad9b1f5c64df10071118e15d1b40862a","previous":"00001d7d699bac8d39ec2dc7c4f2e9f40266bd093d90bc47ee42dfade12f2bac"}
+    chain-1  controller.cpp:2214 operator()
+
+info  2023-07-24T21:12:43.775 net-1     net_plugin.cpp:1788           start_sync           ] ["127.0.0.1:9876 - 8147aaa" - 232 127.0.0.1:51180] Catching up with chain, our last req is 0, theirs is 7562, next expected 7515
+error 2023-07-24T21:12:43.775 nodeos    net_plugin.cpp:3383           process_signed_block ] unlinkable_block_exception connection 232: #7550 9c1357eb549907b7...: Unlinkable block (3030001)

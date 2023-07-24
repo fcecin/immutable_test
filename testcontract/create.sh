@@ -1,0 +1,1 @@
+cleos system newaccount eosio testcontract EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV --stake-cpu "2000.0000 UTX" --stake-net "300.0000 UTX" --buy-ram "1000.0000 UTXRAM" --use-old-send-rpc -t false

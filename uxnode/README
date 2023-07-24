@@ -1,0 +1,21 @@
+This will contain a leap/ subdir with the CORRECT ux4.0.4 build WITH immutability.
+
+
+Also the config.ini for a REGULAR NODE that isn't a producer, and that has the peer address of the fakeuxprods node.
+
+
+This node has to know things went horribly wrong when the 21 producers mutate an immutable contract.
+
+-------
+
+How to generate the leap/ directory:
+
+git clone --recursive https://github.com/cryptomechanics/ux-leap-bls    (OR any other source of UX Leap sourcecode)
+mv ux-leap-bls leap
+cd leap
+git checkout ux4.0.4    (or ux4.0.4-bls if you want to include code that won't trigger)
+git submodule update --init --recursive
+(cmake, make, etc. to generate it under leap/build/...)
+
+
+
